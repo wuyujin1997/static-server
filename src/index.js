@@ -10,7 +10,6 @@ console.log('hello 世界');
 console.log(1);
 
 
-
 /* eslint-disable  */
 
 console.log(2);
