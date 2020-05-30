@@ -1,14 +1,38 @@
 const http = require('http');
-const conf = require('./config/defaultConfig');
 const chalk = require('chalk');
+const path = require('path');
+const fs = require('fs');
+const conf = require('./config/defaultConfig');
 
 const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    // text/html    html格式的文本
-    // text/plain   简单的文本
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.write('<h1>你好啊 李银河</h1> <br>');
-    res.end('hello 世界');
+    const filePath = path.join(conf.root, req.url);
+
+    fs.stat(filePath, (err, stats) => {
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+
+        if (err) {
+            res.statusCode = 404;
+            res.end(`${filePath} 不存在`);
+
+            return ;
+        }
+        
+        // 请求路径是文件
+        if (stats.isFile()) {
+            res.statusCode = 200;
+            res.end(filePath);
+        } 
+        // 请求目录
+        else if (stats.isDirectory()) {
+            // 读取目录
+            fs.readdir(filePath, (err, files) => {
+                res.statusCode = 200;
+                res.end(files.join(', '));
+            });
+        }
+        
+    });
+    
 });
 
 server.listen(conf.port, conf.hostname, () => {
