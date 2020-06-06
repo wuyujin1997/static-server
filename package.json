@@ -6,6 +6,7 @@
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^7.1.0",
+    "gulp": "^4.0.2",
     "pre-commit": "^1.2.2"
   },
   "dependencies": {
@@ -16,7 +17,8 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "fix": "eslint --fix ."
+    "fix": "eslint --fix .",
+    "gulp": "gulp"
   },
   "pre-commit": [
     "fix",
